@@ -14,7 +14,7 @@ function App() {
     Cookies.remove(REACT_APP_TOKEN_NAME)
     setLoggedIn(undefined)
     setToken(undefined)
-  })
+  }, [setLoggedIn, setToken])
 
   useEffect(() => {
     const handleAccountsChanged = (accounts) => {

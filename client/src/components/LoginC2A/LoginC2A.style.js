@@ -12,6 +12,7 @@ export const Div = styled.div`
         display: flex;
         align-items: center;
         border-radius: 4px;
+        font-family: Courier;
         > svg {
             margin-right: 8px;
             width: 30px;
