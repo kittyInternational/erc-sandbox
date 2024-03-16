@@ -6,6 +6,8 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 import Web3 from 'web3'
 import { db, socketConfig } from './config'
+import { getContractHistory } from './utils'
+import defaultModule from './modules/default'
 
 const { NODE_ENV, ORIGIN, PORT, WEB3_SOCKET_URL } = process.env
 
@@ -27,8 +29,16 @@ const App = async () => {
     db.once("open", () => runApp())
 
     // start an awesome web3 app...
-    const runApp = () => console.log('start an awesome web3 app...')
-
+    const runApp = () => {
+        defaultModule.Routes(app)
+        defaultModule.Socket(io, web3)
+        if (defaultModule.Contracts.abi && defaultModule.Contracts.addr) {
+            getContractHistory('default module', web3, defaultModule, ["Transfer", "Approval", "ApprovalForAll"])
+        } else {
+            console.log('no contract found to observe')
+        }
+    }
+    
     // serves prod build of front end:
     if (NODE_ENV === 'PRODUCTION') {
         const staticFolderPath = path.join(__dirname, 'build')

@@ -1,3 +1,10 @@
+export const getContractHistory = async (name, web3, Module, eventIncludes) => {
+    const { Contracts, Deployed, increment, Models, logEvent } = Module
+    const events = await getPastContractEvents(name, web3, Contracts, Deployed, increment, Models, logEvent, eventIncludes)
+    console.log(`${name} ${events}`)
+    subscribeToContractEvents(name, web3, Contracts.Core.abi, Contracts.Core.addr, logEvent, eventIncludes)
+}
+
 const getContractEvents = async (web3, abi, addr) => {
     const events = {}
     const contractInstance = new web3.eth.Contract(abi, addr)
@@ -11,7 +18,7 @@ const getContractEvents = async (web3, abi, addr) => {
     return events
 }
 
-export const subscribeToContractEvents = async (name, web3, abi, addr, logEvent, eventIncludes) => {
+const subscribeToContractEvents = async (name, web3, abi, addr, logEvent, eventIncludes) => {
     let events = await getContractEvents(web3, abi, addr)
     for (const eventName in events) {
         const event = events[eventName]
@@ -42,7 +49,7 @@ const getPastEvents = async (web3, abi, address, fromBlock, toBlock, eventInclud
     return pastEvents
 }
 
-export const getPastContractEvents = async (name, web3, Contracts, fromBlock, increment, Models, logEvent, eventIncludes) => {
+const getPastContractEvents = async (name, web3, Contracts, fromBlock, increment, Models, logEvent, eventIncludes) => {
     const { Event } = Models
     let latestEvent = await Event.findOne({}, {}, { sort: { 'blockNumber': -1 } })
     let fromBlockNumber = latestEvent ? latestEvent.blockNumber + 1 : fromBlock
@@ -65,7 +72,7 @@ export const getPastContractEvents = async (name, web3, Contracts, fromBlock, in
         })
         for (let event of pastEvents) {
             try {
-                await logEvent(event, web3, true)
+                await logEvent(event, web3)
             } catch (error) {
                 console.error(`Error processing event ${event}: ${error}`, event)
             }
