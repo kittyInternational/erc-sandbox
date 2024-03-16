@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  erc-sandbox-mongo:
+    image: mongo:latest
+    container_name: erc-sandbox-mongo
+    networks:
+      - erc-sandbox-network
+    volumes:
+      - ${MONGO_LOCAL_DIR}:/data/db
+    restart: ${RESTART}
+    # # Add resource limits
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: '4-6'  # Adjust the number of CPU cores for API
+    #       memory: '8G'  # Adjust the memory limit for API
+
+  erc-sandbox-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - ${PORT}:${PORT}
+    container_name: erc-sandbox-api
+    restart: ${RESTART}
+    environment:
+      - MONGO_URL=mongodb://erc-sandbox-mongo:27017/erc-sandbox
+    depends_on:
+      - erc-sandbox-mongo
+    networks:
+      - erc-sandbox-network
+    env_file: .env
+    volumes: # allows for local live reload so comment out for prod
+      - ${SRC_CODE_LOCAL_DIR}:/app
+      - /app/node_modules
+    # Add resource limits
+    # deploy:
+    #   resources:
+    #     limits:
+    #       cpus: '6-8'  # Adjust the number of CPU cores
+    #       memory: '16G'  # Adjust the memory limit
+
+networks:
+  erc-sandbox-network:
+    driver: bridge

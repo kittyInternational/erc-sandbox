@@ -1,0 +1,26 @@
+{
+    "name": "erc-sandbox-api",
+    "version": "0.1.0",
+    "description": "ERC-721 Backend Framework",
+    "main": "index.js",
+    "author": "jack@half-a-second.com",
+    "license": "MIT",
+    "private": false,
+    "scripts": {
+        "start": "babel-node index.js"
+    },
+    "dependencies": {
+        "@babel/core": "^7.18.0",
+        "@babel/node": "^7.18.1",
+        "@babel/plugin-transform-object-rest-spread": "^7.24.0",
+        "@babel/preset-env": "^7.18.0",
+        "cors": "^2.8.5",
+        "express": "^4.17.1",
+        "js-base64": "^3.7.2",
+        "jsonwebtoken": "^9.0.0",
+        "mongoose": "^8.1.0",
+        "socket.io": "^4.7.4",
+        "web3": "^4.5.0"
+    }
+  }
+  
