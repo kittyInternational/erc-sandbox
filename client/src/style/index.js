@@ -7,12 +7,15 @@ export const Main = styled.main`
     flex-direction: column;
     height: 100vh;
     width: 100vw;
-    > h1 {
+    h1 {
         font-family: "Press Start 2P";
-        font-size: 4rem;
-        margin-bottom: 48px;
+        font-size: 4vw;
     }
-    > p {
+    h2 {
+        font-family: "Press Start 2P";
+        font-size: 2.5vw;
+    }
+    p {
         font-family: Courier;
     }
 `

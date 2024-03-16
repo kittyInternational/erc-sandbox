@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
-import { BrowserRouter as Router, useLocation } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom'
 import LoginC2A from 'components/LoginC2A'
+import Welcome from 'components/Welcome'
 import * as Styled from 'style'
 
 const AppView = ({ handleSignIn, handleSignOut, loggedIn }) => {
@@ -9,12 +10,9 @@ const AppView = ({ handleSignIn, handleSignOut, loggedIn }) => {
             <ScrollToTop />
             <LoginC2A {...{ handleSignIn, handleSignOut, loggedIn }} />
             <Styled.Main>
-                <h1>ERC SANDBOX</h1>
-                {loggedIn ? (
-                    <p>You are logged in!</p>
-                ): (
-                    <p>You are not logged in!</p>
-                )}
+                <Routes>
+                    <Route path={'/'} element={<Welcome {...{ loggedIn, handleSignIn }} />} />
+                </Routes>
             </Styled.Main>
         </Router>
     )
