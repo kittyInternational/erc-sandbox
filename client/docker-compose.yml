@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  client:
+    build:
+      context: .
+      dockerfile: ${DOCKERFILE}
+    restart: ${RESTART}
+    container_name: erc-sandbox-client
+    env_file: .env
+    ports:
+      - ${PORT}:${PORT}
+    volumes:  # allows for local live reload so comment out for prod
+      - ${SRC_CODE_LOCAL_DIR}:/app
+      - /app/node_modules
