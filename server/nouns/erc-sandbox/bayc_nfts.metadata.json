@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"},{"v":{"$numberInt":"2"},"key":{"tokenId":{"$numberInt":"1"}},"name":"tokenId_1","background":true,"unique":true}],"uuid":"0afc1ed0df9e4407a796631a16c735de","collectionName":"bayc_nfts","type":"collection"}

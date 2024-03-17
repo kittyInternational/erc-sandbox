@@ -1,0 +1,1 @@
+{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"},{"v":{"$numberInt":"2"},"key":{"owner":{"$numberInt":"1"}},"name":"owner_1","background":true,"unique":true}],"uuid":"57075050484a47899be10fa95e8fe36f","collectionName":"bayc_owners","type":"collection"}
