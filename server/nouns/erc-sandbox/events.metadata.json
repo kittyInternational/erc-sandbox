@@ -1,1 +1,0 @@
-{"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_"},{"v":{"$numberInt":"2"},"key":{"blockNumber":{"$numberInt":"1"},"logIndex":{"$numberInt":"1"}},"name":"blockNumber_1_logIndex_1","background":true,"unique":true}],"uuid":"8fa310626b2647ad9add39d142b2c5a9","collectionName":"events","type":"collection"}
