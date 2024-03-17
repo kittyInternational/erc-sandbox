@@ -15,4 +15,7 @@ export const Div = styled.div`
     > h2 {
         margin-bottom: 48px;
     }
+    > p {
+        margin-bottom: 24px;
+    }
 `
