@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import axios from 'axios'
 
 const { REACT_APP_END_POINT } = process.env
@@ -22,7 +23,7 @@ const CurrentNouns = () => {
     }, [nfts])
 
     return (
-        <p>Current Nouns: {nfts === undefined ? '...' : nfts}</p>
+        <p>Current Nouns: {nfts === undefined ? '...' : <Link to={'/nouns'}>{nfts}</Link>}</p>
     )
 }
 

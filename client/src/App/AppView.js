@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import io from 'socket.io-client'
 import Chatroom from 'components/Chatroom'
 import LoginC2A from 'components/LoginC2A'
+import Nfts from 'components/Nfts'
+import Profile from 'components/Profile'
 import Welcome from 'components/Welcome'
 import * as Styled from 'style'
 
@@ -42,6 +44,8 @@ const AppView = ({ handleSignIn, handleSignOut, loggedIn }) => {
                 {socket && <Chatroom account={loggedIn} {...{ socket }} />}
                 <Routes>
                     <Route path={'/'} element={<Welcome {...{ loggedIn, handleSignIn, block }} />} />
+                    <Route path={'/nouns'} element={<Nfts />} />
+                    <Route path={'/profile/:_profile'} element={<Profile {...{ loggedIn }} />} />
                 </Routes>
             </Styled.Main>
         </Router>
