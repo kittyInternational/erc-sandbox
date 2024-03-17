@@ -34,8 +34,8 @@ const App = async () => {
         defaultModule.Routes(app)
         defaultModule.Socket(io, web3)
         if (defaultModule.Contracts.Core.abi && defaultModule.Contracts.Core.addr) {
-            // getContractHistory('Nouns', web3, defaultModule, ["Transfer"])
-            getContractHistory('bayc', web3, baycModule, ['Transfer'])
+            getContractHistory('Nouns', web3, defaultModule, ["Transfer"])
+            // getContractHistory('bayc', web3, baycModule, ['Transfer'])
         } else {
             console.log('no contract found to observe')
         }

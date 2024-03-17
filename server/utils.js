@@ -84,5 +84,5 @@ const getPastContractEvents = async (name, web3, Contracts, fromBlock, increment
         toBlockNumber += increment
         await new Promise(resolve => setTimeout(resolve, 500)) // Don't spam the socket...
     }
-    return `${name} events up to date`
+    return `events up to date`
 }
