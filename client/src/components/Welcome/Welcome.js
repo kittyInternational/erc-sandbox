@@ -1,14 +1,14 @@
 import Blockheight from 'components/Blockheight'
 import * as Styled from './Welcome.style'
-
-const furlin = 'https://img.cryptokitties.co/0x06012c8cf97bead5deae237070f9587f8e7a266d/124.png'
+import CurrentOwners from 'components/CurrentOwners'
+import CurrentNouns from 'components/CurrentNouns'
+import MockImage from 'components/MockImage'
 
 const Welcome = ({ socket, loggedIn, handleSignIn }) => {
     return (
         <Styled.Div>
-            <img src={furlin} alt={'Furlin - Kitty #124'} />
-            <h1>ERC SANDBOX</h1>
-            <h2>by <a href={'https://kitty.international'} target={'_blank'} rel="noreferrer">Kitty.International</a></h2>
+            <MockImage tokenId={1034} /> 
+            <h1>Nouns</h1>
             {loggedIn ? (
                 <p>You are logged in!</p>
             ) : (
@@ -17,6 +17,8 @@ const Welcome = ({ socket, loggedIn, handleSignIn }) => {
                     handleSignIn()
                 }}>Metamask</a> to login</p>
             )}
+            <CurrentNouns />
+            <CurrentOwners />
             <Blockheight {...{ socket }} />
         </Styled.Div>
     )

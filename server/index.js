@@ -26,11 +26,11 @@ const App = async () => {
     const io = new socketIo(server, { cors: { origin: [ORIGIN] } })
     db.on("error", err => console.log("There was a problem connecting to mongo: ", err))
     db.once("open", () => {
-        const name = undefined // adds a name to the server project endpoint so should be lowercase and hypenated if need be e.g. 'cryptokitties'
-        const prefix = undefined // adds a prefix to db tables - e.g. 'ck'
-        const deployed = 0 // block the contract you wish to observer was deployed e.g. 
+        const name = 'nouns' // adds a name to the server project endpoint so should be lowercase and hypenated if need be e.g. 'cryptokitties'
+        const prefix = 'nouns' // adds a prefix to db tables - e.g. 'ck'
+        const deployed = 12985438 // block the contract you wish to observer was deployed e.g. 
         const eventsToWatch = ["Transfer"] /* events you wish to monitor - add more as required e.g. "Approval", "ApprovalForAll" */
-        const increment = 100 // adjust this as required - max is 10000
+        const increment = 2500 // adjust this as required - max is 10000
         defaultModule(app, io, web3, { name, prefix, deployed, increment, eventsToWatch })
     })
 
