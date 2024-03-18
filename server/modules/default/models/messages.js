@@ -1,12 +1,14 @@
 import mongoose from 'mongoose'
 
-const MessageSchema = mongoose.Schema({
-    account: String,
-    message: String
-})
+const createModel = (prefix) => {
+    const Schema = new mongoose.Schema({
+        account: String,
+        message: String
+    })
 
-MessageSchema.set('timestamps', true)
+    Schema.set('timestamps', true)
+    const modelName = prefix ? `${prefix}_message` : 'message'
+    return mongoose.model(modelName, Schema)
+}
 
-const Messages = mongoose.model('message', MessageSchema)
-
-export default Messages
+export default createModel

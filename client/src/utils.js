@@ -1,4 +1,4 @@
-export const END_POINT = process.env.REACT_APP_END_POINT
+export const END_POINT = `${process.env.REACT_APP_END_POINT}/nouns`
 
 export const formatDate = (date) => {
     const d = new Date(date)

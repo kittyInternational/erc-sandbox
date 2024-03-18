@@ -1,23 +1,26 @@
 import mongoose from 'mongoose'
 
-const NftSchema = new mongoose.Schema({
-  tokenId: Number,
-  timestamp: Number,
-  blockNumber: Number,
-  logIndex: Number,
-  transactionIndex: Number,
-  transactionHash: String,
-  blockHash: String,
-  address: String,
-  id: String,
-  owner: String,
-  owners: [String],
-  signature: String,
-  data: String,
-  topics: [String],
-})
+const createModel = (prefix) => {
+    const Schema = new mongoose.Schema({
+        tokenId: Number,
+        timestamp: Number,
+        blockNumber: Number,
+        logIndex: Number,
+        transactionIndex: Number,
+        transactionHash: String,
+        blockHash: String,
+        address: String,
+        id: String,
+        owner: String,
+        owners: [String],
+        signature: String,
+        data: String,
+        topics: [String],
+    })
 
-NftSchema.index({ tokenId: 1 }, { "unique": true })
+    Schema.index({ tokenId: 1 }, { "unique": true })
+    const modelName = prefix ? `${prefix}_nft` : 'nft'
+    return mongoose.model(modelName, Schema)
+}
 
-const Nft = mongoose.model('nft', NftSchema)
-export default Nft
+export default createModel

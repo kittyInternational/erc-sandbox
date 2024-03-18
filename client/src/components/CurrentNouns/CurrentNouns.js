@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
-
-const { REACT_APP_END_POINT } = process.env
+import { END_POINT } from 'utils'
 
 const CurrentNouns = () => {
     const [nfts, setNfts] = useState(undefined)
@@ -11,7 +10,7 @@ const CurrentNouns = () => {
         if (nfts === undefined) {
             const getNfts = async () => {
                 try {
-                    const { data } = await axios.get(`${REACT_APP_END_POINT}/nfts`)
+                    const { data } = await axios.get(`${END_POINT}/nfts`)
                     setNfts(data.length)
                 } catch (e) {
                     console.log(e) // TODO - handle errors

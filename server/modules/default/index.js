@@ -1,72 +1,27 @@
-import Models from './models'
+import _Models from './models'
 import Routes from './routes'
 import Contracts from './contracts'
 import Socket from './socket'
+import { getContractHistory, handleStandardERC721Event } from '../../utils'
 
-const increment = 2500 // how many blocks per query when looking for past events
-const Deployed = 12985438
+const logEvent = async (event, Models, web3) => handleStandardERC721Event(event, Models, web3)
 
-const { Event, NFT, Owner } = Models
-
-const logEvent = async (event, web3) => {
-    const _event = {
-        logIndex: Number(event.logIndex),
-        transactionIndex: Number(event.transactionIndex),
-        transactionHash: event.transactionHash,
-        blockHash: event.blockHash,
-        blockNumber: Number(event.blockNumber),
-        address: event.address,
-        id: event.id,
-        signature: event.signature,
-        data: event.raw && event.raw.data ? event.raw.data : event.data,
-        topics: event.raw && event.raw.topics ? event.raw.topics : event.topics,
-    }
-
-    if (event.returnValues.tokenId !== undefined && event.returnValues.tokenId !== null) { _event.tokenId = Number(event.returnValues.tokenId) }
-    if (event.returnValues.from) { _event.from = event.returnValues.from.toLowerCase() }
-    if (event.returnValues.to) { _event.to = event.returnValues.to.toLowerCase() }
-    if (event.returnValues.owner) { _event.owner = event.returnValues.owner }
-    if (event.returnValues.operator) { _event.owner = event.returnValues.operator }
-    if (event.returnValues.approved) { _event.approved = event.returnValues.approved }
-    const { timestamp } = await web3.eth.getBlock(_event.blockNumber);
-    _event.timestamp = Number(timestamp);
-    if (event.event === "Transfer") {
-        if (_event.from === '0x0000000000000000000000000000000000000000') {
-            _event.owner = _event.to
-            _event.owners = [_event.to];
-            await new NFT(_event).save();
-            const record = await Owner.findOneAndUpdate(
-                { owner: _event.to },
-                { $inc: { balance: 1 } },
-                { upsert: true }
-            ).exec();
-        } else {
-            if (_event.from !== '0x0000000000000000000000000000000000000000') {
-                try {
-                    const record = await NFT.findOneAndUpdate(
-                        { tokenId: _event.tokenId },
-                        { owner: _event.to, $addToSet: { owners: _event.to } },
-                        { upsert: false }
-                    ).exec()
-                    const record2 = await Owner.findOneAndUpdate(
-                        { owner: _event.from },
-                        { $inc: { balance: -1 } },
-                        { upsert: false }
-                    ).exec()
-                    const record3 = await Owner.findOneAndUpdate(
-                        { owner: _event.to },
-                        { $inc: { balance: 1 } },
-                        { upsert: true }
-                    ).exec()
-                } catch (e) {
-                    console.log(e)
-                }
-            }
+const runModule = (app, io, web3, config) => {
+    const { name, prefix, deployed, increment, eventsToWatch } = config
+    const Models = {}
+    Object.keys(_Models).map((m, i) => {
+        Models[m] = _Models[m](prefix)
+        if (i === Object.keys(_Models).length - 1) {
+            Routes(app, name, Models)
+            Socket(io, web3, Models)
         }
+    })
+    if (Object.keys(Contracts) && Contracts[Object.keys(Contracts)[0]].abi && Contracts[Object.keys(Contracts)[0]].addr) {
+        const module = { Contracts, Models, deployed, increment, eventsToWatch, logEvent: event => logEvent(event, Models, web3) }
+        getContractHistory(name === undefined ? 'default module' : name, module, eventsToWatch, web3)
+    } else {
+        console.log('no contract found to observe')
     }
-    _event.event = event.event
-    const _Event = new Event(_event)
-    const record = await _Event.save()
 }
 
-export default { Models, Routes, Contracts, Socket, Deployed, increment, logEvent }
+export default runModule

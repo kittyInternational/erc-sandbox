@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-
-const { REACT_APP_END_POINT } = process.env
+import { END_POINT } from 'utils'
 
 const CurrentOwners = () => {
     const [owners, setOwners] = useState(undefined)
@@ -10,7 +9,7 @@ const CurrentOwners = () => {
         if (owners === undefined) {
             const getOwners = async () => {
                 try {
-                    const { data } = await axios.get(`${REACT_APP_END_POINT}/owners`)
+                    const { data } = await axios.get(`${END_POINT}/owners`)
                     setOwners(data.length)
                 } catch (e) {
                     console.log(e) // TODO - handle errors

@@ -1,11 +1,15 @@
 import mongoose from 'mongoose'
 
-const OwnerSchema = new mongoose.Schema({
-  owner: String,
-  balance: Number,
-})
 
-OwnerSchema.index({ owner: 1 }, { "unique": true })
+const createModel = (prefix) => {
+    const Schema = new mongoose.Schema({
+        owner: String,
+        balance: Number,
+    })
 
-const Owner = mongoose.model('owner', OwnerSchema)
-export default Owner
+    Schema.index({ owner: 1 }, { "unique": true })
+    const modelName = prefix ? `${prefix}_owner` : 'owner'
+    return mongoose.model(modelName, Schema)
+}
+
+export default createModel

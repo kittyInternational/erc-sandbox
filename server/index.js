@@ -6,9 +6,7 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 import Web3 from 'web3'
 import { db, socketConfig } from './config'
-import { getContractHistory } from './utils'
 import defaultModule from './modules/default'
-// import baycModule from './modules/bayc'
 
 const { NODE_ENV, ORIGIN, PORT, WEB3_SOCKET_URL } = process.env
 
@@ -27,19 +25,14 @@ const App = async () => {
     app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
     const io = new socketIo(server, { cors: { origin: [ORIGIN] } })
     db.on("error", err => console.log("There was a problem connecting to mongo: ", err))
-    db.once("open", () => runApp())
-
-    // start an awesome web3 app...
-    const runApp = () => {
-        defaultModule.Routes(app)
-        defaultModule.Socket(io, web3)
-        if (defaultModule.Contracts.Core.abi && defaultModule.Contracts.Core.addr) {
-            const eventsToWatch = ["Transfer", /* add more events as required e.g. "Approval", "ApprovalForAll" */]
-            getContractHistory('Nouns', web3, defaultModule, eventsToWatch)
-        } else {
-            console.log('no contract found to observe')
-        }
-    }
+    db.once("open", () => {
+        const name = 'nouns' // adds a name to the server project endpoint so should be lowercase and hypenated if need be e.g. 'cryptokitties'
+        const prefix = 'nouns' // adds a prefix to db tables - e.g. 'ck'
+        const deployed = 12985438 // block the contract you wish to observer was deployed e.g. 
+        const eventsToWatch = ["Transfer"] /* events you wish to monitor - add more as required e.g. "Approval", "ApprovalForAll" */
+        const increment = 2500 // adjust this as required - max is 10000
+        defaultModule(app, io, web3, { name, prefix, deployed, increment, eventsToWatch })
+    })
 
     // serves prod build of front end:
     if (NODE_ENV === 'PRODUCTION') {

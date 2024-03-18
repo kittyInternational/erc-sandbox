@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import axios from 'axios'
+import { END_POINT } from 'utils'
 import MockImage from 'components/MockImage'
 import * as Styled from './Profile.style'
-
-const { REACT_APP_END_POINT } = process.env
 
 const Profile = ({ loggedIn }) => {
     let { _profile } = useParams()
@@ -14,7 +13,7 @@ const Profile = ({ loggedIn }) => {
         if (nfts === undefined && profile) {
             const getNfts = async () => {
                 try {
-                    const { data } = await axios.get(`${REACT_APP_END_POINT}/nfts`) 
+                    const { data } = await axios.get(`${END_POINT}/nfts`) 
                     setNfts([...data.filter(({ owner }) => owner === profile.owner).sort((a, b) => a.tokenId - b.tokenId)]) // TODO - hacky but time running out
                 } catch (e) {
                     console.log(e) // TODO - handle errors
@@ -27,7 +26,7 @@ const Profile = ({ loggedIn }) => {
 
     useEffect(() => {
         const getProfile = async (account) => {
-            const { data } = await axios.get(`${REACT_APP_END_POINT}/owners`) // TODO - hacky but time running out
+            const { data } = await axios.get(`${END_POINT}/owners`) // TODO - hacky but time running out
             const p = data.find(({ owner }) => owner === account)
             setProfile(p)
         }

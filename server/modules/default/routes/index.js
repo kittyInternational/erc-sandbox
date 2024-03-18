@@ -1,13 +1,12 @@
 import authRoutes from './auth'
-import nftRoutes from './nft'
 import nftsRoutes from './nfts'
 import ownersRoutes from './owners'
 
-const routes = app => {
-    app.use('/auth', authRoutes)
-    app.use('/nft', nftRoutes)
-    app.use('/nfts', nftsRoutes)
-    app.use('/owners', ownersRoutes)
+const routes = (app, urlPrepend, Models) => {
+    const url = urlPrepend ? `/${urlPrepend}` : ``
+    app.use(`${url}/auth`, authRoutes(Models))
+    app.use(`${url}/nfts`, nftsRoutes(Models))
+    app.use(`${url}/owners`, ownersRoutes(Models))
 }
 
 export default routes
