@@ -13,7 +13,7 @@ const runModule = (app, io, web3, config) => {
         Models[m] = _Models[m](prefix)
         if (i === Object.keys(_Models).length - 1) {
             Routes(app, name, Models)
-            Socket(io, web3, Models)
+            Socket(io, web3, name ? name : '', Models)
         }
     })
     if (Object.keys(Contracts) && Contracts[Object.keys(Contracts)[0]].abi && Contracts[Object.keys(Contracts)[0]].addr) {
