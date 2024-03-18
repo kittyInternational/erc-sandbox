@@ -1,22 +1,25 @@
 import mongoose from 'mongoose'
 
-const AccountSchema = new mongoose.Schema({
-  address: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  token: {
-    type: String,
-  },
-  avatar: {
-    type: Number,
-    default: -1,
-  }
-})
+const createModel = (prefix) => {
+  const Schema = new mongoose.Schema({
+    address: {
+      type: String,
+      required: true,
+      unique: true
+    },
+    token: {
+      type: String,
+    },
+    avatar: {
+      type: Number,
+      default: -1,
+    }
+  })
+  
+  Schema.set('timestamps', true)
+  Schema.index({ "address": 1 }, { "unique": true })
+  const modelName = prefix ? `${prefix}_account` : 'account'
+  return mongoose.model(modelName, Schema)
+}
 
-AccountSchema.set('timestamps', true)
-AccountSchema.index({ "address": 1 }, { "unique": true })
-const Account = mongoose.model('account', AccountSchema)
-
-export default Account
+export default createModel
