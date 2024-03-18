@@ -7,7 +7,7 @@ import { getContractHistory, handleStandardERC721Event } from '../../utils'
 const logEvent = async (event, Models, web3) => handleStandardERC721Event(event, Models, web3)
 
 const runModule = (app, io, web3, config) => {
-    const { name, prefix, deployed, increment } = config
+    const { name, prefix, deployed, increment, eventsToWatch } = config
     const Models = {}
     Object.keys(_Models).map((m, i) => {
         Models[m] = _Models[m](prefix)
