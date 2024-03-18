@@ -3,29 +3,23 @@ import mongoose from 'mongoose'
 const createModel = (prefix) => {
     const Schema = new mongoose.Schema({
         tokenId: Number,
-        event: String,
-        blockNumber: Number,
         timestamp: Number,
+        blockNumber: Number,
         logIndex: Number,
         transactionIndex: Number,
         transactionHash: String,
         blockHash: String,
         address: String,
         id: String,
-        // These won't be in all events:
-        from: String,
-        to: String,
         owner: String,
-        operator: String,
-        approved: String,
-        //
+        owners: [String],
         signature: String,
         data: String,
-        topics: [String]
+        topics: [String],
     })
 
-    Schema.index({ "blockNumber": 1, logIndex: 1 }, { "unique": true })
-    const modelName = prefix ? `${prefix}_event` : 'event'
+    Schema.index({ tokenId: 1 }, { "unique": true })
+    const modelName = prefix ? `${prefix}_nft` : 'nft'
     return mongoose.model(modelName, Schema)
 }
 

@@ -6,7 +6,6 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 import Web3 from 'web3'
 import { db, socketConfig } from './config'
-import { getContractHistory } from './utils'
 import defaultModule from './modules/default'
 
 const { NODE_ENV, ORIGIN, PORT, WEB3_SOCKET_URL } = process.env
@@ -26,19 +25,9 @@ const App = async () => {
     app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
     const io = new socketIo(server, { cors: { origin: [ORIGIN] } })
     db.on("error", err => console.log("There was a problem connecting to mongo: ", err))
-    db.once("open", () => runApp())
-
-    // start an awesome web3 app...
-    const runApp = () => {
-        defaultModule.Routes(app)
-        defaultModule.Socket(io, web3)
-        if (defaultModule.Contracts.Core.abi && defaultModule.Contracts.Core.addr) {
-            const eventsToWatch = ["Transfer", /* add more events as required e.g. "Approval", "ApprovalForAll" */]
-            getContractHistory('default module', web3, defaultModule, eventsToWatch)
-        } else {
-            console.log('no contract found to observe')
-        }
-    }
+    db.once("open", () => {
+        defaultModule(app, io, web3, { name: 'nouns', prefix: 'nouns', deployed: 12985438, increment: 2500 })
+    })
 
     // serves prod build of front end:
     if (NODE_ENV === 'PRODUCTION') {

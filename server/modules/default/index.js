@@ -1,13 +1,27 @@
-import Models from './models'
+import _Models from './models'
 import Routes from './routes'
 import Contracts from './contracts'
 import Socket from './socket'
+import { getContractHistory, handleStandardERC721Event } from '../../utils'
 
-const increment = 2500 // how many blocks per query when looking for past events
-const Deployed = 0
+const logEvent = async (event, Models, web3) => handleStandardERC721Event(event, Models, web3)
 
-const logEvent = async (event, web3) => {
-    console.log(event)
+const runModule = (app, io, web3, config) => {
+    const { name, prefix, deployed, increment } = config
+    const Models = {}
+    Object.keys(_Models).map((m, i) => {
+        Models[m] = _Models[m](prefix)
+        if (i === Object.keys(_Models).length - 1) {
+            Routes(app, name, Models)
+            Socket(io, web3, Models)
+        }
+    })
+    if (Object.keys(Contracts) && Contracts[Object.keys(Contracts)[0]].abi && Contracts[Object.keys(Contracts)[0]].addr) {
+        const module = { Contracts, Models, deployed, increment, eventsToWatch, logEvent: event => logEvent(event, Models, web3) }
+        getContractHistory(name === undefined ? 'default module' : name, module, eventsToWatch, web3)
+    } else {
+        console.log('no contract found to observe')
+    }
 }
 
-export default { Models, Routes, Contracts, Socket, Deployed, increment, logEvent }
+export default runModule
