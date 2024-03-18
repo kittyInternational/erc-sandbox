@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components'
+import icon from './icon.svg'
 
 export const Div = styled.div`
     position: fixed;
@@ -24,7 +25,7 @@ export const C2A = styled.div`
     z-index: 101;
     left: 24px;
     top: 20px;
-    background-image: url('/chat-icon.svg');
+    background-image: url(${icon});
     background-size: 20px 20px;
     cursor: pointer;
     &:hover {

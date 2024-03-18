@@ -1,32 +1,38 @@
 import { useEffect, useState } from 'react'
-import { formatDate } from './utils'
+import { formatDate } from 'utils'
 import * as Styled from './Messages.style'
 
 const Messages = ({ socket }) => {
-  const [messages, setMessages] = useState([])
+    const [messages, setMessages] = useState([])
 
-  useEffect(() => {
-    socket.emit('getMessages')
-    socket.on('messages', data => {
-      setMessages([...data].reverse())
-    })
-  }, [])
+    useEffect(() => {
+        const eventHandlers = {
+            messages: data => setMessages([...data].reverse())
+        }
+        if (socket) {
+            Object.keys(eventHandlers).forEach((eventName) => socket.on(eventName, eventHandlers[eventName]))
+            socket.emit('getMessages')
+            return () => {
+                Object.keys(eventHandlers).forEach((eventName) => socket.off(eventName, eventHandlers[eventName]))
+            }
+        }
+    }, [socket])
 
-  return (
-    <Styled.Div>
-      {messages.map(({ account, createdAt, message }, i) => {
-        return (
-          <div key={i}>
-            <div>
-              <div><span>{account}</span></div>
-              <div>{message}</div>
-              <div>{formatDate(createdAt)}</div>
-            </div>
-          </div>
-        )
-      })}
-    </Styled.Div>
-  )
+    return (
+        <Styled.Div>
+            {messages.map(({ account, createdAt, message }, i) => {
+                return (
+                    <div key={i}>
+                        <div>
+                            <div><span>{account}</span></div>
+                            <div>{message}</div>
+                            <div>{formatDate(createdAt)}</div>
+                        </div>
+                    </div>
+                )
+            })}
+        </Styled.Div>
+    )
 }
 
 export default Messages

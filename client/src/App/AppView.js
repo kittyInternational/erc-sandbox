@@ -6,33 +6,30 @@ import LoginC2A from 'components/LoginC2A'
 import Nfts from 'components/Nfts'
 import Profile from 'components/Profile'
 import Welcome from 'components/Welcome'
+import { END_POINT } from 'utils'
 import * as Styled from 'style'
 
 const AppView = ({ handleSignIn, handleSignOut, loggedIn }) => {
-    const { REACT_APP_END_POINT } = process.env
     const [socket, setSocket] = useState(false)
-    const [block, setBlock] = useState(undefined)
 
     useEffect(() => {
+        let _socket
+        const eventHandlers = {
+            connect: () => setSocket(_socket),
+            connect_error: (err) => console.log(`connect_error due to ${err}`),
+            disconnect: () => setSocket(null),
+        }
+    
         if (!socket) {
-            const _socket = io(REACT_APP_END_POINT, { transports: ['websocket'] });
-            const eventHandlers = {
-                connect: () => {
-                    setSocket(_socket)
-                },
-                connect_error: (err) => {
-                    console.log(`connect_error due to ${err}`)
-                },
-                disconnect: () => {
-                    setSocket(null)
-                },
-                ethHeader: (block) => {
-                    setBlock(Number(block))
-                },
+            _socket = io(END_POINT, { transports: ['websocket'] })
+            Object.keys(eventHandlers).forEach((eventName) => _socket.on(eventName, eventHandlers[eventName]))
+        } else {
+            return () => {
+                if (_socket) {
+                    Object.keys(eventHandlers).forEach((eventName) => _socket.off(eventName, eventHandlers[eventName]))
+                    _socket.disconnect()
+                }
             }
-            Object.keys(eventHandlers).forEach((eventName) => {
-                _socket.on(eventName, eventHandlers[eventName])
-            })
         }
     }, [socket])
 
@@ -43,7 +40,7 @@ const AppView = ({ handleSignIn, handleSignOut, loggedIn }) => {
             <Styled.Main>
                 {socket && <Chatroom account={loggedIn} {...{ socket }} />}
                 <Routes>
-                    <Route path={'/'} element={<Welcome {...{ loggedIn, handleSignIn, block }} />} />
+                    <Route path={'/'} element={<Welcome {...{ loggedIn, handleSignIn, socket }} />} />
                     <Route path={'/nouns'} element={<Nfts />} />
                     <Route path={'/profile/:_profile'} element={<Profile {...{ loggedIn }} />} />
                 </Routes>

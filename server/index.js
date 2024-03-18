@@ -8,7 +8,7 @@ import Web3 from 'web3'
 import { db, socketConfig } from './config'
 import { getContractHistory } from './utils'
 import defaultModule from './modules/default'
-import baycModule from './modules/bayc'
+// import baycModule from './modules/bayc'
 
 const { NODE_ENV, ORIGIN, PORT, WEB3_SOCKET_URL } = process.env
 
@@ -34,13 +34,13 @@ const App = async () => {
         defaultModule.Routes(app)
         defaultModule.Socket(io, web3)
         if (defaultModule.Contracts.Core.abi && defaultModule.Contracts.Core.addr) {
-            getContractHistory('Nouns', web3, defaultModule, ["Transfer"])
-            // getContractHistory('bayc', web3, baycModule, ['Transfer'])
+            const eventsToWatch = ["Transfer", /* add more events as required e.g. "Approval", "ApprovalForAll" */]
+            getContractHistory('Nouns', web3, defaultModule, eventsToWatch)
         } else {
             console.log('no contract found to observe')
         }
     }
-    
+
     // serves prod build of front end:
     if (NODE_ENV === 'PRODUCTION') {
         const staticFolderPath = path.join(__dirname, 'build')
