@@ -32,13 +32,14 @@ const App = async () => {
     const runApp = () => {
         defaultModule.Routes(app)
         defaultModule.Socket(io, web3)
-        if (defaultModule.Contracts.abi && defaultModule.Contracts.addr) {
-            getContractHistory('default module', web3, defaultModule, ["Transfer", "Approval", "ApprovalForAll"])
+        if (defaultModule.Contracts.Core.abi && defaultModule.Contracts.Core.addr) {
+            const eventsToWatch = ["Transfer", /* add more events as required e.g. "Approval", "ApprovalForAll" */]
+            getContractHistory('default module', web3, defaultModule, eventsToWatch)
         } else {
             console.log('no contract found to observe')
         }
     }
-    
+
     // serves prod build of front end:
     if (NODE_ENV === 'PRODUCTION') {
         const staticFolderPath = path.join(__dirname, 'build')

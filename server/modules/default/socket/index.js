@@ -22,23 +22,22 @@ const socket = async (io, web3) => {
   setInterval(fetchLatestBlockHeader, 1000)
 
   io.on('connection', socket => {
-    socket.emit('ethHeader', latestBlockNumber.toString())
     socketCount++
     io.emit('users connected', socketCount)
-    socket.on('ethHeader', () => socket.emit('ethHeader', latestBlockNumber.toString()))
+    socket.emit('ethHeader', latestBlockNumber.toString())
 
+    socket.on('ethHeader', () => socket.emit('ethHeader', latestBlockNumber.toString()))
+    socket.on('getMessages', () => getMessages(socket))
+    socket.on('getAccounts', () => getAccounts(socket))
     socket.on('addMessage', req => {
       const { message, account } = req
       let _Message = new Message({ message, account })
       _Message.save().then(() => getMessages(io))
     })
-
-    socket.on('getMessages', () => getMessages(socket))
-    socket.on('getAccounts', () => getAccounts(socket))
     socket.on('disconnect', () => {
       socketCount--
       io.emit('users connected', socketCount)
-      console.log('users connected - 1', socketCount)
+      console.log('users connected', socketCount)
     })
   })
 }
