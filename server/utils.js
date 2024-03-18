@@ -1,10 +1,12 @@
 export const getContractHistory = async (name, web3, Module, eventIncludes) => {
     const { Contracts, Deployed, increment, Models, logEvent } = Module
-    const events = await getPastContractEvents(name, web3, Contracts, Deployed, increment, Models, logEvent, eventIncludes)
-    console.log(`${name} ${events}`)
-    subscribeToContractEvents(name, web3, Contracts.Core.abi, Contracts.Core.addr, logEvent, eventIncludes)
+    Object.keys(Contracts).map(async contractName => {
+        const events = await getPastContractEvents(`${name} ${contractName}`, web3, Contracts[contractName].abi, Contracts[contractName].addr, Deployed, increment, Models, logEvent, eventIncludes)
+        console.log(`${events}`)
+        subscribeToContractEvents(name, web3, Contracts.Core.abi, Contracts.Core.addr, logEvent, eventIncludes)
+    })
 }
-
+    
 const getContractEvents = async (web3, abi, addr) => {
     const events = {}
     const contractInstance = new web3.eth.Contract(abi, addr)
@@ -49,14 +51,14 @@ const getPastEvents = async (web3, abi, address, fromBlock, toBlock, eventInclud
     return pastEvents
 }
 
-const getPastContractEvents = async (name, web3, Contracts, fromBlock, increment, Models, logEvent, eventIncludes) => {
+const getPastContractEvents = async (name, web3, abi, addr, fromBlock, increment, Models, logEvent, eventIncludes) => {
     const { Event } = Models
     let latestEvent = await Event.findOne({}, {}, { sort: { 'blockNumber': -1 } })
     let fromBlockNumber = latestEvent ? latestEvent.blockNumber + 1 : fromBlock
     let toBlockNumber = fromBlockNumber + increment - 1
 
     while (fromBlockNumber <= await web3.eth.getBlockNumber()) {
-        let pastEvents = await getPastEvents(web3, Contracts.Core.abi, Contracts.Core.addr, fromBlockNumber, toBlockNumber, eventIncludes)
+        let pastEvents = await getPastEvents(web3, abi, addr, fromBlockNumber, toBlockNumber, eventIncludes)
         pastEvents.sort((a, b) => {
             const aBlockNumber = a.blockNumber
             const bBlockNumber = b.blockNumber
