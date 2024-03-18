@@ -11,6 +11,7 @@ const Messages = ({ socket }) => {
         }
         if (socket) {
             Object.keys(eventHandlers).forEach((eventName) => socket.on(eventName, eventHandlers[eventName]))
+            socket.emit('getMessages')
             return () => {
                 Object.keys(eventHandlers).forEach((eventName) => socket.off(eventName, eventHandlers[eventName]))
             }
