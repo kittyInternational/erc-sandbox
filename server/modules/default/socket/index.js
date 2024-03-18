@@ -1,4 +1,4 @@
-const socket = async (io, web3, Models) => {
+const socket = async (io, web3, name, Models) => {
     const { Account, Message } = Models
     let socketCount = 0
     let latestBlockNumber = await web3.eth.getBlockNumber()
@@ -19,9 +19,11 @@ const socket = async (io, web3, Models) => {
     // Start fetching block headers at intervals (every second in this case)
     setInterval(fetchLatestBlockHeader, 1000)
 
-    io.on('connection', socket => {
+    const namespace = io.of(`/${name}`)
+
+    namespace.on('connection', socket => {
         socketCount++
-        io.emit('users connected', socketCount)
+        namespace.emit('users connected', socketCount)
         socket.emit('ethHeader', latestBlockNumber.toString())
 
         socket.on('ethHeader', () => socket.emit('ethHeader', latestBlockNumber.toString()))
