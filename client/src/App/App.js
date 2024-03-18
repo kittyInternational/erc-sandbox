@@ -3,8 +3,9 @@ import Web3 from 'web3'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import AppView from './AppView'
+import { END_POINT } from 'utils'
 
-const { REACT_APP_END_POINT, REACT_APP_CHAIN_ID, REACT_APP_TOKEN_NAME } = process.env
+const { REACT_APP_CHAIN_ID, REACT_APP_TOKEN_NAME } = process.env
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(undefined)
@@ -53,7 +54,7 @@ function App() {
           const message = 'Sign this message to authenticate'
           const accounts = await web3.eth.getAccounts()
           const signature = await web3.eth.personal.sign(message, accounts[0], '')
-          const response = await axios.post(`${REACT_APP_END_POINT}/auth`, { address: accounts[0], signature, message })
+          const response = await axios.post(`${END_POINT}/auth`, { address: accounts[0], signature, message })
           Cookies.set(REACT_APP_TOKEN_NAME, response.data.token)
           setLoggedIn(accounts[0])
         } catch (error) {
@@ -68,7 +69,7 @@ function App() {
   const handleSignOut = async () => {
     if (token) {
       try {
-        await axios.post(`${REACT_APP_END_POINT}/auth/logout`, { token })
+        await axios.post(`${END_POINT}/auth/logout`, { token })
       } catch (error) {
         console.error('Logout error:', error)
       }
@@ -80,7 +81,7 @@ function App() {
     try {
       const chainId = await window.ethereum.request({ method: 'eth_chainId' })
       if (chainId === REACT_APP_CHAIN_ID) {
-        const { data } = await axios.post(`${REACT_APP_END_POINT}/auth/check-token`, { token })
+        const { data } = await axios.post(`${END_POINT}/auth/check-token`, { token })
         if (data.valid) {
           setLoggedIn(data.address.toLowerCase())
         } else {
