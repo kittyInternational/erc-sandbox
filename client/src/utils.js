@@ -1,3 +1,5 @@
+export const END_POINT = process.env.REACT_APP_END_POINT
+
 export const formatDate = (date) => {
     const d = new Date(date)
     const day = d.toLocaleDateString('en-GB', { day: 'numeric' })
