@@ -1,5 +1,6 @@
 import defaultModule from './default'
 import chainedHorseModule from './chained-horse'
+import twoBitBearModule from './two-bit-bears'
 
 const modules = (app, io, web3) => {
     const name = undefined // adds a name to the server project endpoint so should be lowercase and hypenated if need be e.g. 'cryptokitties'
@@ -17,6 +18,16 @@ const modules = (app, io, web3) => {
         increment: 10000,
         eventsToWatch: ['Transfer']
     })
+
+    // Add some bears...
+    twoBitBearModule(app, io, web3, {
+        name: 'two-bit-bears',
+        prefix: 'tbb',
+        deployed: 13385399,
+        increment: 1000,
+        eventsToWatch: ['Transfer']
+    })
+    
 }
 
 export default modules
