@@ -1,2 +1,10 @@
 @import url("./reset.css");
 @import url("./typography.css");
+
+#root, body, html {
+    height: 100%;
+}
+
+p {
+    margin-bottom: 16px;
+}
