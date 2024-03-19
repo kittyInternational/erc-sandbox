@@ -4,7 +4,9 @@ import Contracts from './contracts'
 import Socket from './socket'
 import { getContractHistory, handleStandardERC721Event } from '../../utils'
 
-const logEvent = async (event, Models, web3) => handleStandardERC721Event(event, Models, web3)
+const processEvent = undefined
+
+const logEvent = async (event, Models, web3) => handleStandardERC721Event(event, processEvent, Models, web3)
 
 const runModule = (app, io, web3, config) => {
     const { name, prefix, deployed, increment, eventsToWatch } = config
