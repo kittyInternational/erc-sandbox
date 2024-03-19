@@ -6,7 +6,7 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 import Web3 from 'web3'
 import { db, socketConfig } from './config'
-import module from './modules/default'
+import runModules from './modules'
 
 const { NODE_ENV, ORIGIN, PORT, WEB3_SOCKET_URL } = process.env
 
@@ -25,14 +25,7 @@ const App = async () => {
     app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
     const io = new socketIo(server, { cors: { origin: [ORIGIN] } })
     db.on("error", err => console.log("There was a problem connecting to mongo: ", err))
-    db.once("open", () => {
-        const name = undefined // adds a name to the server project endpoint so should be lowercase and hypenated if need be e.g. 'cryptokitties'
-        const prefix = undefined // adds a prefix to db tables - e.g. 'ck'
-        const deployed = 0 // block the contract you wish to observer was deployed e.g. 4605167
-        const eventsToWatch = ["Transfer"] /* events you wish to monitor - add more as required e.g. "Approval", "ApprovalForAll" */
-        const increment = 100 // adjust this as required - max is 10000
-        module(app, io, web3, { name, prefix, deployed, increment, eventsToWatch })    
-    })
+    db.once("open", () => runModules(app, io, web3))
 
     // serves prod build of front end:
     if (NODE_ENV === 'PRODUCTION') {
