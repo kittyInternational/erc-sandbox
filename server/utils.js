@@ -89,7 +89,7 @@ const getPastContractEvents = async (name, abi, addr, fromBlock, increment, Mode
     return `${name} events up to date`
 }
 
-export const handleStandardERC721Event = async (event, Models, web3) => {
+export const handleStandardERC721Event = async (event, processEvent, Models, web3) => {
     const _event = {
         logIndex: Number(event.logIndex),
         transactionIndex: Number(event.transactionIndex),
@@ -109,18 +109,22 @@ export const handleStandardERC721Event = async (event, Models, web3) => {
     if (event.returnValues.owner) { _event.owner = event.returnValues.owner }
     if (event.returnValues.operator) { _event.owner = event.returnValues.operator }
     if (event.returnValues.approved) { _event.approved = event.returnValues.approved }
-    const { timestamp } = await web3.eth.getBlock(_event.blockNumber);
-    _event.timestamp = Number(timestamp);
+    const { timestamp } = await web3.eth.getBlock(_event.blockNumber)
+    _event.timestamp = Number(timestamp)
+
     if (event.event === "Transfer") {
         if (_event.from === '0x0000000000000000000000000000000000000000') {
             _event.owner = _event.to
-            _event.owners = [_event.to];
-            await new Models.NFT(_event).save();
+            _event.owners = [_event.to]
+            if (processEvent) {
+                await processEvent(_event, web3)
+            }
+            await new Models.NFT(_event).save()
             const record = await Models.Owner.findOneAndUpdate(
                 { owner: _event.to },
                 { $inc: { balance: 1 } },
                 { upsert: true }
-            ).exec();
+            ).exec()
         } else {
             if (_event.from !== '0x0000000000000000000000000000000000000000') {
                 try {
