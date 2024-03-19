@@ -1,6 +1,7 @@
 import defaultModule from './default'
 import chainedHorseModule from './chained-horse'
 import twoBitBearModule from './two-bit-bears'
+import chainfacesModule from './chainfaces'
 
 const modules = (app, io, web3) => {
     const name = undefined // adds a name to the server project endpoint so should be lowercase and hypenated if need be e.g. 'cryptokitties'
@@ -25,6 +26,15 @@ const modules = (app, io, web3) => {
         prefix: 'tbb',
         deployed: 13385399,
         increment: 1000,
+        eventsToWatch: ['Transfer']
+    })
+
+    // Add some chainfaces...
+    chainfacesModule(app, io, web3, {
+        name: 'chainfaces',
+        prefix: 'cf',
+        deployed: 9314784,
+        increment: 10000,
         eventsToWatch: ['Transfer']
     })
     
