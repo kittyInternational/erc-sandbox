@@ -34,7 +34,6 @@ const Chainface = () => {
                     <p>logIndex: {meta.logIndex} - txIndex: {meta.transactionIndex}</p>
                     <p>symmetry: {meta.faceSymmetry} - golf score: {meta.golfScore} - percentBear: {meta.percentBear}</p>
                     <p>owner: <Link to={`/profile/${meta.owner}`}>{meta.owner}</Link> - owners: {meta.owners.length}</p>
-                    {console.log(meta)}
                 </>
             )}
             {Number(id) < faces.length - 1 && <Styled.Right><Link to={`/chainface/${Number(id) + 1}`}>→</Link></Styled.Right>}
