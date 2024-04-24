@@ -2,11 +2,14 @@
 
 A suite of tools that allows you to spin up a sandbox / dev space for dapps using ERC-721 tokens - or any solidity / EVM logic - and deploy to production with ease.
 
-<img src="https://raw.githubusercontent.com/kittyInternational/erc-sandbox/main/client/public/images/docs/chainfaces-example1.png" style="max-width: 520px">
-<img src="https://raw.githubusercontent.com/kittyInternational/erc-sandbox/main/client/public/images/docs/kitty-family-example1.png" style="max-width: 520px">
-<img src="https://raw.githubusercontent.com/kittyInternational/erc-sandbox/main/client/public/images/docs/the-paddock-example1.png" style="max-width: 520px">
+![Chainfaces Example](/client/public/images/docs/chainfaces-example1-sm.jpg)
+### _Chainfaces full stack dapp example_
 
-_Chainfaces full stack dapp example_
+![Kitty.Family Example](/client/public/images/docs/kitty-family-example1-sm.jpg)
+### _Kitty.Family full stack dapp example with marketplace and search_
+
+![The Paddock Example](/client/public/images/docs/the-paddock-example1-sm.jpg)
+### _The Paddock full stack dapp / game example_
 
 ### Features
 - front end (react) dapp with metamask login flow, (login secure) chat room and (live) block height example
