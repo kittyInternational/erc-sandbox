@@ -2,7 +2,9 @@
 
 A suite of tools that allows you to spin up a sandbox / dev space for dapps using ERC-721 tokens - or any solidity / EVM logic - and deploy to production with ease.
 
-<img src="https://private-user-images.githubusercontent.com/4430250/314261803-252bc1ce-3814-4c3b-8dc3-5ad81d7ae000.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MTA4OTM0MzMsIm5iZiI6MTcxMDg5MzEzMywicGF0aCI6Ii80NDMwMjUwLzMxNDI2MTgwMy0yNTJiYzFjZS0zODE0LTRjM2ItOGRjMy01YWQ4MWQ3YWUwMDAucG5nP1gtQW16LUFsZ29yaXRobT1BV1M0LUhNQUMtU0hBMjU2JlgtQW16LUNyZWRlbnRpYWw9QUtJQVZDT0RZTFNBNTNQUUs0WkElMkYyMDI0MDMyMCUyRnVzLWVhc3QtMSUyRnMzJTJGYXdzNF9yZXF1ZXN0JlgtQW16LURhdGU9MjAyNDAzMjBUMDAwNTMzWiZYLUFtei1FeHBpcmVzPTMwMCZYLUFtei1TaWduYXR1cmU9MTcyMGJmYTU1ZWY1ZmVhNzM3YjBlNWZkMTNjNGFlNzA3N2FmN2U4Nzg4OWY4NTNiOWM2ZmEyZTEyN2ZhNWMwYyZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QmYWN0b3JfaWQ9MCZrZXlfaWQ9MCZyZXBvX2lkPTAifQ.8XdCB9hX3mjwOziYZzSaCkSer--6S32st_s9jEQDpZo" style="width: 200px">
+<img src="https://raw.githubusercontent.com/kittyInternational/erc-sandbox/main/client/public/images/docs/chainfaces-example1.png" style="max-width: 520px">
+<img src="https://raw.githubusercontent.com/kittyInternational/erc-sandbox/main/client/public/images/docs/kitty-family-example1.png" style="max-width: 520px">
+<img src="https://raw.githubusercontent.com/kittyInternational/erc-sandbox/main/client/public/images/docs/the-paddock-example1.png" style="max-width: 520px">
 
 _Chainfaces full stack dapp example_
 
