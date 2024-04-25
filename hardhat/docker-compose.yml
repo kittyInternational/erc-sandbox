@@ -1,0 +1,11 @@
+services:
+  hardhat:
+    container_name: erc-sandbox-hardhat
+    build:
+      context: .
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - 8545:8545
+    command: tail -f /dev/null
