@@ -1,4 +1,5 @@
 import defaultModule from './default'
+import chainedHorseModule from './chained-horse'
 
 const modules = (app, io, web3) => {
     const name = undefined // adds a name to the server project endpoint so should be lowercase and hypenated if need be e.g. 'cryptokitties'
@@ -7,6 +8,15 @@ const modules = (app, io, web3) => {
     const eventsToWatch = ["Transfer"] /* events you wish to monitor - add more as required e.g. "Approval", "ApprovalForAll" */
     const increment = 100 // adjust this as required - max is 10000
     defaultModule(app, io, web3, { name, prefix, deployed, increment, eventsToWatch })
+
+    // Add some horses...
+    chainedHorseModule(app, io, web3, { 
+        name: 'chained-horse',
+        prefix: 'ch',
+        deployed: 13504887,
+        increment: 10000,
+        eventsToWatch: ['Transfer']
+    })
 }
 
 export default modules
